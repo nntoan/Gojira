@@ -42,7 +42,8 @@ class JqlResponse extends BaseResponse implements ResponseInterface
     {
         $rows = [];
         $issues = $this->response[self::ISSUES];
-        for ($counter = 0; $counter < count($issues); $counter++) {
+        $totalIssues = count($issues);
+        for ($counter = 0; $counter < $totalIssues; $counter++) {
             $key = $issues[$counter][self::KEY];
             $priority = $issues[$counter][self::FIELDS][self::PRIORITY];
             $summary = $issues[$counter][self::FIELDS][self::SUMMARY];
