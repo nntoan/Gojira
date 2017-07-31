@@ -1,5 +1,13 @@
 GoJIRA, a PHP client for JIRA
 ================================================
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/05f29fd2-39da-495f-bfe7-75acc7eba01a/mini.png)](https://insight.sensiolabs.com/projects/05f29fd2-39da-495f-bfe7-75acc7eba01a)
+[![Build Status](https://img.shields.io/travis/nntoan/Gojira/master.svg)](https://travis-ci.org/nntoan/Gojira)
+[![Coverage Status](https://img.shields.io/coveralls/nntoan/Gojira/master.svg)](https://coveralls.io/github/nntoan/Gojira?branch=master)
+[![Code Quality](https://img.shields.io/scrutinizer/g/nntoan/Gojira.svg)](https://scrutinizer-ci.com/g/nntoan/Gojira/)
+[![Latest Stable Version](https://img.shields.io/packagist/v/nntoan/gojira.svg?label=stable)](https://packagist.org/packages/nntoan/gojira)
+[![Pre Release](https://img.shields.io/packagist/vpre/nntoan/gojira.svg?label=dev)](https://packagist.org/packages/nntoan/gojira)
+[![Total Downloads](https://img.shields.io/packagist/dt/nntoan/gojira.svg)](https://packagist.org/packages/nntoan/gojira)
+[![License](https://img.shields.io/packagist/l/nntoan/gojira.svg)](https://packagist.org/packages/nntoan/gojira)
 
 GoJIRA is a PHP client for JIRA based on [Symfony2][1] components:
 

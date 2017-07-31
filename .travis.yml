@@ -10,17 +10,21 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+matrix:
+  allow_failures:
+    - php: hhvm
+  fast_finish: true
+
 before_install:
   - travis_retry composer self-update
   - travis_retry composer install --no-interaction --no-suggest --prefer-dist
 
 script:
-  - ./vendor/bin/phpunit --verbose
+  - mkdir -p build/logs
+  - ./vendor/bin/phpunit --coverage-clover build/logs/coverage.xml
 
-matrix:
-  allow_failures:
-    - php: hhvm
-  fast_finish: true
+after_script:
+  - ./vendor/bin/coveralls -v --coverage_clover build/logs/coverage.xml
 
 notifications:
   email:

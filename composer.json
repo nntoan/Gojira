@@ -31,7 +31,8 @@
     "league/flysystem": "1.0.40"
   },
   "require-dev": {
-    "phpunit/phpunit": "~3.7"
+    "phpunit/phpunit": "4.8.*",
+    "satooshi/php-coveralls": "~1.0"
   },
   "suggest": {
     "symfony/yaml": "^2.7 || ^3.0",
@@ -49,7 +50,8 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-gorira": "2.x-dev"
+      "dev-master": "1.0.x-dev",
+      "dev-gorira": "1.x-dev"
     }
   }
 }
