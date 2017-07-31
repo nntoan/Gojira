@@ -2,5 +2,4 @@
 /phpunit.xml
 /build/
 /docs/.build
-/.idea/
 /composer.lock

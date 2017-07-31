@@ -104,6 +104,11 @@ class GuzzleClient extends BaseClient implements ClientInterface
             $defaults['debug'] = true;
         }
 
+        // Enable GuzzleStack if use cache is true
+        if ($this->isUseCache()) {
+            $defaults['handler'] = GuzzleStack::create();
+        }
+
         // Set crtBundleFile (certificate) if given else disable SSL verification
         if (!empty($this->crtBundleFile)) {
             $defaults['verify'] = $this->getCrtBundleFile();
@@ -119,7 +124,6 @@ class GuzzleClient extends BaseClient implements ClientInterface
         }
 
         $httpClient = new Client(array_merge_recursive([
-            //'handler' => GuzzleStack::create(), //TODO: Fix fucking slow 20k concurrent requests
             'base_uri' => $this->getBaseUrl()
         ], $defaults));
 
@@ -152,9 +156,11 @@ class GuzzleClient extends BaseClient implements ClientInterface
 
         // Set endpoint parameters if available
         foreach ($this->getEndpointParameters() as $key => $value) {
-            $options[RequestOptions::QUERY] = [
-                $key => $value
-            ];
+            if (!empty($value)) {
+                $options[RequestOptions::QUERY] = [
+                    $key => $value
+                ];
+            }
         }
 
         // Create new PSR-7 request
@@ -166,7 +172,7 @@ class GuzzleClient extends BaseClient implements ClientInterface
         );
 
         try {
-            $response = $this->getHttpClient()->send($request);
+            $response = $this->getHttpClient()->send($request, $options);
         } catch (ClientException $e) {
             // Check if not found
             if ($e->getResponse()->getStatusCode() === StatusCodes::HTTP_NOT_FOUND) {
@@ -277,7 +283,7 @@ class GuzzleClient extends BaseClient implements ClientInterface
      */
     protected function isInit()
     {
-        if ($this->getHttpClient() != null) {
+        if ($this->getHttpClient() !== null) {
             return true;
         }
 

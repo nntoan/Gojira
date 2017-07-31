@@ -8,6 +8,7 @@
 
 namespace Gojira\Command\Jira\Worklog;
 
+use Gojira\Api\Configuration\OptionsInterface;
 use Gojira\Api\Data\TableInterface;
 use Gojira\Api\Exception\ApiException;
 use Gojira\Api\Exception\HttpNotFoundException;
@@ -17,7 +18,6 @@ use Gojira\Command\Jira\AbstractCommand;
 use Gojira\Jira\Endpoint\IssueEndpoint;
 use Gojira\Jira\Response\IssueResponse;
 use Gojira\Provider\Console\Table;
-use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -67,8 +67,8 @@ class AddCommand extends AbstractCommand
             $comment = $input->getArgument(IssueEndpoint::PAYLOAD_COMMENT);
             $startedAt = $input->getOption(self::OPT_STARTED_AT) ?: 'now';
 
-            $dt = new \DateTime($startedAt);
-            $started = $dt->format('Y-m-d\TH:i:s.000+1000'); // Force sending Australia TZ
+            $dt = new \DateTime($startedAt, new \DateTimeZone($this->getOptionItem(OptionsInterface::TIMEZONE)));
+            $started = $dt->format('Y-m-d\TH:i:s.000') . $dt->format('O');
 
             try {
                 $response = $this->getResponse([

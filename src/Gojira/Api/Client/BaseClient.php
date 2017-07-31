@@ -55,6 +55,11 @@ abstract class BaseClient
     protected $debug = false;
 
     /**
+     * @var bool
+     */
+    protected $useCache = false;
+
+    /**
      * @var mixed
      */
     protected $data;
@@ -70,12 +75,14 @@ abstract class BaseClient
      * @param string                  $baseUrl        JIRA base url
      * @param AuthenticationInterface $authentication Authentication object
      * @param bool                    $debug          Debug mode
+     * @param bool                    $useCache       Cache mode
      */
-    public function __construct($baseUrl, AuthenticationInterface $authentication, $debug = false)
+    public function __construct($baseUrl, AuthenticationInterface $authentication, $debug = false, $useCache = false)
     {
         $this->setBaseUrl($baseUrl);
         $this->setAuthentication($authentication);
         $this->setDebug($debug);
+        $this->setUseCache($useCache);
     }
 
     /**
@@ -216,6 +223,26 @@ abstract class BaseClient
     public function isDebug()
     {
         return $this->debug;
+    }
+
+    /**
+     * Set use cache mode
+     *
+     * @param boolean $isUseCache
+     */
+    public function setUseCache($isUseCache)
+    {
+        $this->useCache = $isUseCache;
+    }
+
+    /**
+     * Check use cache mode
+     *
+     * @return bool
+     */
+    public function isUseCache()
+    {
+        return $this->useCache;
     }
 
     /**

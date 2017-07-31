@@ -13,6 +13,7 @@ use Gojira\Api\Client\GuzzleClient;
 use Gojira\Api\Configuration\AuthInterface;
 use Gojira\Api\Configuration\Configuration;
 use Gojira\Api\Configuration\ConfigurationInterface;
+use Gojira\Api\Configuration\Options;
 use Gojira\Api\Configuration\OptionsInterface;
 use Gojira\Provider\Console\Command;
 use Gojira\Provider\Console\Table;
@@ -45,6 +46,11 @@ abstract class AbstractCommand extends Command
      * @var \Gojira\Provider\Console\Table
      */
     private $table = null;
+
+    /**
+     * @var array
+     */
+    protected $optionItems = null;
 
     /**
      * AbstractCommand constructor.
@@ -114,7 +120,8 @@ abstract class AbstractCommand extends Command
             $this->apiClient = new GuzzleClient(
                 $this->getBaseUri(),
                 $this->authentication,
-                (bool)$debug
+                (bool)$debug,
+                (bool)$this->optionItems[OptionsInterface::IS_USE_CACHE]
             );
         }
 
@@ -131,6 +138,23 @@ abstract class AbstractCommand extends Command
         $configItems = $this->configuration->getData(ConfigurationInterface::OPTIONS);
 
         return implode('", "', $configItems[OptionsInterface::AVAILABLE_ISSUES]);
+    }
+
+    /**
+     * Get option item
+     *
+     * @param string $key
+     *
+     * @return array|mixed|null
+     */
+    protected function getOptionItem($key = null)
+    {
+        $optionItems = $this->configuration->getData(ConfigurationInterface::OPTIONS);
+        if ($key === null) {
+            return $optionItems;
+        }
+
+        return $optionItems[$key];
     }
 
     /**

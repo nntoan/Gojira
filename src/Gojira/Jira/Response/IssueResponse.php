@@ -54,7 +54,8 @@ class IssueResponse extends BaseResponse implements ResponseInterface
         }
 
         $worklogs = $this->response[self::WORKLOGS];
-        for ($counter = 0; $counter < count($worklogs); $counter++) {
+        $totalWorklogs = count($worklogs);
+        for ($counter = 0; $counter < $totalWorklogs; $counter++) {
             $worklogId = $worklogs[$counter][self::ID];
             $startDate = $worklogs[$counter][self::CREATED];
             $author = $worklogs[$counter][self::AUTHOR][self::DISPLAY_NAME];

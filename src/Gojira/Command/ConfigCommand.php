@@ -8,6 +8,7 @@
 
 namespace Gojira\Command;
 
+use DateTimeZone;
 use Gojira\Api\Authentication\BasicAuthentication;
 use Gojira\Api\Authentication\JiraBasicAuthentication;
 use Gojira\Api\Configuration\Auth;
@@ -15,11 +16,14 @@ use Gojira\Api\Configuration\AuthInterface;
 use Gojira\Api\Configuration\Configuration;
 use Gojira\Api\Configuration\ConfigurationInterface;
 use Gojira\Api\Configuration\Options;
+use Gojira\Api\Configuration\OptionsInterface;
 use Gojira\Api\Configuration\Path;
 use Gojira\Provider\Console\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
 /**
@@ -67,11 +71,12 @@ class ConfigCommand extends Command
         $this->authentication = new JiraBasicAuthentication($this->configuration);
 
         $help = __(
-            "Config Help:\n%1\n%2\n%3\n%4",
+            "Config Help:\n%1\n%2\n%3\n%4\n%5",
             ' - Jira URL: https://foo.atlassian.net/',
             ' - Username: user (for user@foo.bar)',
             ' - Password: Your password',
-            ' - Timezone: Choose your timezone'
+            ' - Timezone: Choose your timezone',
+            ' - Use cache: Choose cache mode'
         );
 
         $this
@@ -97,19 +102,22 @@ class ConfigCommand extends Command
             $jiraUrl = $helper->ask($input, $output, $this->getJiraUrlQuestion());
             $username = $helper->ask($input, $output, $this->getJiraUsernameQuestion());
             $password = $helper->ask($input, $output, $this->getJiraPasswordQuestion());
+            $timezones = $helper->ask($input, $output, $this->chooseTimezoneQuestion());
+            $useCache = $helper->ask($input, $output, $this->chooseCacheModeQuestion());
 
-            //TODO: Adding choice question to set timezone
-
-            if (!empty($jiraUrl) && !empty($username) && !empty($password)) {
+            if (isset($jiraUrl, $username, $password, $timezones, $useCache)) {
                 $authenticate = new BasicAuthentication($username, $password);
                 $authItems = [
-                    AuthInterface::BASE_URI        => $jiraUrl,
-                    AuthInterface::USERNAME        => $username,
-                    AuthInterface::TOKEN_SECRET    => $authenticate->getCredential(),
+                    AuthInterface::BASE_URI => $jiraUrl,
+                    AuthInterface::USERNAME => $username,
+                    AuthInterface::TOKEN_SECRET => $authenticate->getCredential(),
                     AuthInterface::CONSUMER_SECRET => uniqid(),
-                    AuthInterface::BCRYPT_MODE     => false
+                    AuthInterface::BCRYPT_MODE => false
                 ];
-                $optionItems = $this->optionConfig->initDefaultOptionItems();
+                $optionItems = array_merge(
+                    $this->optionConfig->initDefaultOptionItems(),
+                    [OptionsInterface::TIMEZONE => $timezones, OptionsInterface::IS_USE_CACHE => $useCache]
+                );
                 $pathItems = $this->pathConfig->initDefaultPaths();
 
                 $this->authConfig->setData($authItems);
@@ -192,6 +200,36 @@ class ConfigCommand extends Command
         });
         $question->setHidden(true);
         $question->setMaxAttempts(20);
+
+        return $question;
+    }
+
+    /**
+     * Choose server timezone question
+     *
+     * @return ChoiceQuestion
+     */
+    private function chooseTimezoneQuestion()
+    {
+        $timezones = DateTimeZone::listIdentifiers();
+        $question = new ChoiceQuestion(
+            '<question>Please choose your server timezone (defaults to Australia/Sydney):</question> ',
+            $timezones,
+            313
+        );
+        $question->setErrorMessage('Timezone %s is invalid');
+
+        return $question;
+    }
+
+    /**
+     * Select cache mode question
+     *
+     * @return ConfirmationQuestion
+     */
+    private function chooseCacheModeQuestion()
+    {
+        $question = new ConfirmationQuestion('<question>Please select HttpClient cache mode:</question> ', false);
 
         return $question;
     }

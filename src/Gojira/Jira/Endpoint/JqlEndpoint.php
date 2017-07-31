@@ -40,7 +40,6 @@ class JqlEndpoint extends BaseEndpoint implements EndpointInterface
         $expand = null
     ) {
         $parameters = array(
-            'jql'           => $jql,
             'startAt'       => $startAt,
             'maxResults'    => $maxResults,
             'validateQuery' => $validateQuery,
