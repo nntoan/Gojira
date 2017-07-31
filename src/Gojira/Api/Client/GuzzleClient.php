@@ -277,7 +277,7 @@ class GuzzleClient extends BaseClient implements ClientInterface
      */
     protected function isInit()
     {
-        if ($this->getHttpClient() != null) {
+        if ($this->getHttpClient() !== null) {
             return true;
         }
 
