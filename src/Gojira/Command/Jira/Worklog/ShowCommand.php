@@ -17,7 +17,6 @@ use Gojira\Command\Jira\AbstractCommand;
 use Gojira\Jira\Endpoint\IssueEndpoint;
 use Gojira\Jira\Response\IssueResponse;
 use Gojira\Provider\Console\Table;
-use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -56,7 +55,7 @@ class ShowCommand extends AbstractCommand
                 if ($this->getApiClient()->getResultHttpCode() === StatusCodes::HTTP_OK) {
                     $this->renderTable($output, [
                         TableInterface::HEADERS => ['ID', 'Date', 'Author', 'Time Spent', 'Comment'],
-                        TableInterface::ROWS    => Table::buildRows($rows)
+                        TableInterface::ROWS => Table::buildRows($rows)
                     ]);
                 }
             } catch (ApiException $e) {

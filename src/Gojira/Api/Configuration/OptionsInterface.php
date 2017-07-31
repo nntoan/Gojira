@@ -22,5 +22,6 @@ interface OptionsInterface
     const JIRA_START = 'jira_start';
     const JIRA_REVIEW = 'jira_review';
     const JIRA_DONE = 'jira_done';
+    const IS_USE_CACHE = 'is_use_cache';
     const AVAILABLE_ISSUES = 'available_issues_status';
 }

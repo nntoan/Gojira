@@ -104,6 +104,11 @@ class GuzzleClient extends BaseClient implements ClientInterface
             $defaults['debug'] = true;
         }
 
+        // Enable GuzzleStack if use cache is true
+        if ($this->isUseCache()) {
+            $defaults['handler'] = GuzzleStack::create();
+        }
+
         // Set crtBundleFile (certificate) if given else disable SSL verification
         if (!empty($this->crtBundleFile)) {
             $defaults['verify'] = $this->getCrtBundleFile();
@@ -119,7 +124,6 @@ class GuzzleClient extends BaseClient implements ClientInterface
         }
 
         $httpClient = new Client(array_merge_recursive([
-            //'handler' => GuzzleStack::create(), //TODO: Fix fucking slow 20k concurrent requests
             'base_uri' => $this->getBaseUrl()
         ], $defaults));
 
