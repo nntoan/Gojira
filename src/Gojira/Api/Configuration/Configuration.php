@@ -30,16 +30,6 @@ class Configuration extends DataObject implements ConfigurationInterface
     private $path;
 
     /**
-     * @var AuthInterface
-     */
-    private $authConfig;
-
-    /**
-     * @var OptionsInterface
-     */
-    private $optionConfig;
-
-    /**
      * Configuration items
      *
      * @var array
