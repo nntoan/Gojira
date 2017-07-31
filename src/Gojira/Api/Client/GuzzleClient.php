@@ -152,9 +152,11 @@ class GuzzleClient extends BaseClient implements ClientInterface
 
         // Set endpoint parameters if available
         foreach ($this->getEndpointParameters() as $key => $value) {
-            $options[RequestOptions::QUERY] = [
-                $key => $value
-            ];
+            if (!empty($value)) {
+                $options[RequestOptions::QUERY] = [
+                    $key => $value
+                ];
+            }
         }
 
         // Create new PSR-7 request
@@ -166,7 +168,7 @@ class GuzzleClient extends BaseClient implements ClientInterface
         );
 
         try {
-            $response = $this->getHttpClient()->send($request);
+            $response = $this->getHttpClient()->send($request, $options);
         } catch (ClientException $e) {
             // Check if not found
             if ($e->getResponse()->getStatusCode() === StatusCodes::HTTP_NOT_FOUND) {
