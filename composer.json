@@ -1,0 +1,55 @@
+{
+  "name": "nntoan/gojira",
+  "description": "PHP client for JIRA software based on the Symfony2 Components",
+  "keywords": [
+    "microframework",
+    "cli",
+    "rest-api",
+    "jira"
+  ],
+  "homepage": "http://gojira.nntoan.com",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Toan Nguyen",
+      "email": "me@nntoan.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.9",
+    "pimple/pimple": "^3.0",
+    "silex/api": "^2.0",
+    "guzzlehttp/guzzle": "^6.0",
+    "jms/serializer": "^1.8",
+    "padraic/phar-updater": "^1.0",
+    "symfony/filesystem": "^2.7 || ^3.0",
+    "symfony/finder": "^2.7 || ^3.0",
+    "symfony/process": "^2.7 || ^3.0",
+    "symfony/console": "^2.7 || ^3.0",
+    "symfony/event-dispatcher": "^2.7 || ^3.0",
+    "kevinrob/guzzle-cache-middleware": "v2.1",
+    "league/flysystem": "1.0.40"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~3.7"
+  },
+  "suggest": {
+    "symfony/yaml": "^2.7 || ^3.0",
+    "symfony/validator": "^2.7 || ^3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Gojira\\": "src/Gojira"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Gojira\\Tests\\": "tests/Gojira"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-gorira": "2.x-dev"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+
+if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg') {
+    echo 'Warning: Humbug may only be invoked from a command line', PHP_EOL;
+}
+
+if (!$loader = include __DIR__ . '/../src/Gojira/bootstrap.php') {
+    die('You must set up the project dependencies.');
+}
+
+$app = new \Gojira\Application(\Gojira\Application::CODENAME, \Gojira\Application::VERSION);
+
+// Auto-register all commands in application container
+$app->registerCommands();
+
+// Register specified commands for specified business
+if ('phar:' === substr(__FILE__, 0, 5)) {
+    $app->command(new \Gojira\Command\SelfUpdateCommand());
+}
+
+// Set default command (must fallback to ListCommand)
+$app->defaultCmd('config');
+
+// Hide default symfony commands
+$app->get('list')->setHidden(true);
+$app->get('help')->setHidden(true);
+
+$app->run();

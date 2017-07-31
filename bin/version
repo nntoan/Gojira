@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+sha1sum build/gojira.phar > build/gojira.version
