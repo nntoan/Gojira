@@ -33,7 +33,7 @@ class Random
      * @param null|string $chars
      *
      * @return string
-     * @throws \Gojira\Api\Exception\ApiException
+     * @throws \Gojira\Framework\Exception\LocalizedException
      */
     public function getRandomString($length, $chars = null)
     {
@@ -50,17 +50,17 @@ class Random
                 $rand = abs(hexdec($hex) % $lc); // random integer from 0 to $lc
                 $str .= $chars[$rand]; // random character in $chars
             }
-        } elseif ($fp = @fopen('/dev/urandom', 'rb')) {
+        } elseif ($fp = fopen('/dev/urandom', 'rb')) {
             // attempt to use /dev/urandom if it exists but openssl isn't available
             for ($i = 0, $lc = strlen($chars) - 1; $i < $length; $i++) {
-                $bytes = @fread($fp, PHP_INT_SIZE);
+                $bytes = fread($fp, PHP_INT_SIZE);
                 $hex = bin2hex($bytes); // hex() doubles the length of the string
                 $rand = abs(hexdec($hex) % $lc); // random integer from 0 to $lc
                 $str .= $chars[$rand]; // random character in $chars
             }
             fclose($fp);
         } else {
-            throw new \Gojira\Api\Exception\ApiException(
+            throw new \Gojira\Framework\Exception\LocalizedException(
                 new \Gojira\Framework\Phrase("Please make sure you have 'openssl' extension installed")
             );
         }
@@ -75,7 +75,7 @@ class Random
      * @param $max [optional]
      *
      * @return int A random integer value between min (or 0) and max
-     * @throws \Gojira\Api\Exception\ApiException
+     * @throws \Gojira\Framework\Exception\LocalizedException
      */
     public static function getRandomNumber($min = 0, $max = null)
     {
@@ -97,7 +97,7 @@ class Random
             $offset = abs(hexdec($hex) % $range); // random integer from 0 to $range
             fclose($fp);
         } else {
-            throw new \Gojira\Api\Exception\ApiException(
+            throw new \Gojira\Framework\Exception\LocalizedException(
                 new \Gojira\Framework\Phrase("Please make sure you have 'openssl' extension installed")
             );
         }
