@@ -90,9 +90,9 @@ class Random
             $bytes = openssl_random_pseudo_bytes(PHP_INT_SIZE);
             $hex = bin2hex($bytes); // hex() doubles the length of the string
             $offset = abs(hexdec($hex) % $range); // random integer from 0 to $range
-        } elseif ($fp = @fopen('/dev/urandom', 'rb')) {
+        } elseif ($fp = fopen('/dev/urandom', 'rb')) {
             // attempt to use /dev/urandom if it exists but openssl isn't available
-            $bytes = @fread($fp, PHP_INT_SIZE);
+            $bytes = fread($fp, PHP_INT_SIZE);
             $hex = bin2hex($bytes); // hex() doubles the length of the string
             $offset = abs(hexdec($hex) % $range); // random integer from 0 to $range
             fclose($fp);
