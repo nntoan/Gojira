@@ -46,7 +46,7 @@ class ContainerAwareApplication extends Application
     /**
      * Get the Container.
      *
-     * @return Container
+     * @return Container|mixed
      */
     public function getContainer()
     {

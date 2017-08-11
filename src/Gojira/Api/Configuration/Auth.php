@@ -11,7 +11,7 @@ namespace Gojira\Api\Configuration;
 use Gojira\Api\Data\DataObject;
 
 /**
- * Class Auth
+ * Base class to work with auth config items
  *
  * @package Gojira\Api\Configuration
  * @author  Toan Nguyen <me@nntoan.com>

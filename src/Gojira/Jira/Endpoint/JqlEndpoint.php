@@ -39,13 +39,13 @@ class JqlEndpoint extends BaseEndpoint implements EndpointInterface
         $fields = null,
         $expand = null
     ) {
-        $parameters = array(
+        $parameters = [
             'startAt'       => $startAt,
             'maxResults'    => $maxResults,
             'validateQuery' => $validateQuery,
             'fields'        => $fields,
             'expand'        => $expand
-        );
+        ];
 
         return $this->apiClient->callEndpoint(__e('search?jql=%1', $jql), $parameters);
     }

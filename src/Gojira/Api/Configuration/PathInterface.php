@@ -9,7 +9,7 @@
 namespace Gojira\Api\Configuration;
 
 /**
- * Class PathInterface
+ * Interface for path config items
  *
  * @package Gojira\Api\Configuration
  * @author  Toan Nguyen <me@nntoan.com>

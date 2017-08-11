@@ -30,4 +30,14 @@ abstract class BaseResponse implements ResponseInterface
     {
         $this->response = $response;
     }
+
+    /**
+     * Renders nothing
+     *
+     * @return null
+     */
+    protected function renderNothing()
+    {
+        return null;
+    }
 }

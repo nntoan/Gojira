@@ -6,18 +6,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Gojira\Api\Phrase;
+namespace Gojira\Framework;
 
-use Gojira\Api\Phrase\Renderer\Placeholder as RendererPlaceholder;
-use Gojira\Api\Phrase\Renderer\RendererInterface;
+use Gojira\Framework\Phrase\Renderer\Placeholder as RendererPlaceholder;
+use Gojira\Framework\Phrase\RendererInterface;
 
 /**
  * Class Phrase
  *
- * @package Gojira\Api\Phrase
+ * @package Gojira\Framework
  * @author  Toan Nguyen <me@nntoan.com>
  */
-
 class Phrase
 {
     /**
@@ -45,6 +44,7 @@ class Phrase
      * Set default Phrase renderer
      *
      * @param RendererInterface $renderer
+     *
      * @return void
      */
     public static function setRenderer(RendererInterface $renderer)
@@ -69,7 +69,7 @@ class Phrase
      * Phrase construct
      *
      * @param string $text
-     * @param array $arguments
+     * @param array  $arguments
      */
     public function __construct($text, array $arguments = [])
     {

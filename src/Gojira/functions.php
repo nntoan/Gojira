@@ -6,10 +6,13 @@
  * file that was distributed with this source code.
  */
 
+// @codingStandardsIgnoreFile
+
 /**
- * Create value-object \Gojira\Api\Phrase\Phrase
+ * Create value-object \Gojira\Framework\Phrase
  *
  * @return string
+ * @SuppressWarnings(PHPMD.ShortMethodName)
  */
 function __()
 {
@@ -20,7 +23,7 @@ function __()
         $argc = $argc[0];
     }
 
-    return (new \Gojira\Api\Phrase\Phrase($text, $argc))->render();
+    return (new \Gojira\Framework\Phrase($text, $argc))->render();
 }
 
 /**

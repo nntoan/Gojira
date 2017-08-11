@@ -10,6 +10,7 @@ namespace Gojira\Jira\Response;
 
 use Gojira\Api\Response\BaseResponse;
 use Gojira\Api\Response\ResponseInterface;
+use Symfony\Component\Console\Helper\TableCell;
 
 /**
  * Render result for Jira JQL search
@@ -24,9 +25,14 @@ class JqlResponse extends BaseResponse implements ResponseInterface
      */
     public function render($type = null)
     {
-        $result = [];
-        if ($type === 'issue:list') {
-            $result = $this->renderIssueList();
+        switch ($type) {
+            case 'issue:list':
+            case 'issue:list:in-progress':
+                $result = $this->renderIssueList();
+                break;
+            default:
+                $result = $this->renderNothing();
+                break;
         }
 
         return $result;
@@ -43,6 +49,13 @@ class JqlResponse extends BaseResponse implements ResponseInterface
         $rows = [];
         $issues = $this->response[self::ISSUES];
         $totalIssues = count($issues);
+
+        if ($totalIssues === 0) {
+            $rows[] = [
+                new TableCell('There are no available issues. Enjoys your day!', ['colspan' => 4])
+            ];
+        }
+
         for ($counter = 0; $counter < $totalIssues; $counter++) {
             $key = $issues[$counter][self::KEY];
             $priority = $issues[$counter][self::FIELDS][self::PRIORITY];

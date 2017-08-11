@@ -9,7 +9,7 @@
 namespace Gojira\Api\Configuration;
 
 /**
- * Class AuthInterface
+ * Interface for auth config items
  *
  * @package Gojira\Api\Configuration
  * @author  Toan Nguyen <me@nntoan.com>

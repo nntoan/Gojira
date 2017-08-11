@@ -9,6 +9,7 @@
 namespace Gojira\Api\Configuration;
 
 use Gojira\Api\Data\DataObject;
+use Gojira\Framework\Serializer\Serializer;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**

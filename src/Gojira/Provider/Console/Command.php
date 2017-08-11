@@ -8,6 +8,13 @@
 
 namespace Gojira\Provider\Console;
 
+use Gojira\Api\Authentication\JiraBasicAuthentication;
+use Gojira\Api\Configuration\Auth;
+use Gojira\Api\Configuration\Configuration;
+use Gojira\Api\Configuration\Options;
+use Gojira\Api\Configuration\Path;
+use Gojira\Framework\Math\Random;
+use Gojira\Framework\ObjectManager\ObjectManager;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 
 /**
@@ -21,6 +28,52 @@ use Symfony\Component\Console\Command\Command as BaseCommand;
  */
 abstract class Command extends BaseCommand
 {
+    /**
+     * @var \Gojira\Api\Configuration\Configuration
+     */
+    protected $configuration = null;
+
+    /**
+     * @var \Gojira\Api\Authentication\JiraBasicAuthentication
+     */
+    protected $authentication = null;
+
+    /**
+     * @var \Gojira\Api\Configuration\Path
+     */
+    protected $pathConfig = null;
+
+    /**
+     * @var \Gojira\Api\Configuration\Auth
+     */
+    protected $authConfig = null;
+
+    /**
+     * @var \Gojira\Api\Configuration\Options
+     */
+    protected $optionConfig = null;
+
+    /**
+     * @var \Gojira\Provider\Console\Prompt
+     */
+    protected $prompt = null;
+
+    /**
+     * @var \Gojira\Framework\Math\Random
+     */
+    protected $random = null;
+
+    /**
+     * AbstractCommand constructor.
+     *
+     * @param null $name
+     */
+    public function __construct($name = null)
+    {
+        $this->__initialise();
+        parent::__construct($name);
+    }
+
     /**
      * Returns the application container.
      *
@@ -50,5 +103,22 @@ abstract class Command extends BaseCommand
     public function getService($name)
     {
         return $this->getApplication()->getService($name);
+    }
+
+    /**
+     * Initialise all object instances
+     *
+     * @return void
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
+     */
+    private function __initialise()
+    {
+        $this->configuration = ObjectManager::create(Configuration::class);
+        $this->authentication = ObjectManager::create(JiraBasicAuthentication::class, [$this->configuration]);
+        $this->authConfig = ObjectManager::create(Auth::class);
+        $this->optionConfig = ObjectManager::create(Options::class);
+        $this->pathConfig = ObjectManager::create(Path::class);
+        $this->prompt = ObjectManager::create(Prompt::class);
+        $this->random = ObjectManager::create(Random::class);
     }
 }

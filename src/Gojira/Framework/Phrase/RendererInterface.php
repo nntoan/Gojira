@@ -6,13 +6,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Gojira\Api\Phrase\Renderer;
+namespace Gojira\Framework\Phrase;
 
 /**
- * Translate phrase renderer
+ * GoJira phrase renderer
  *
  * @api
- * @package Gojira\Api\Phrase\Renderer
+ * @package Gojira\Framework\Phrase\Renderer
  * @author  Toan Nguyen <me@nntoan.com>
  */
 interface RendererInterface

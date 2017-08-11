@@ -9,16 +9,12 @@
 namespace Gojira\Command\Jira\Worklog;
 
 use Gojira\Api\Configuration\OptionsInterface;
-use Gojira\Api\Data\TableInterface;
-use Gojira\Api\Exception\ApiException;
-use Gojira\Api\Exception\HttpNotFoundException;
-use Gojira\Api\Exception\UnauthorizedException;
 use Gojira\Api\Request\StatusCodes;
 use Gojira\Api\Response\ResponseInterface;
 use Gojira\Command\Jira\AbstractCommand;
 use Gojira\Jira\Endpoint\IssueEndpoint;
-use Gojira\Jira\Response\IssueResponse;
-use Gojira\Provider\Console\Table;
+use Gojira\Jira\Endpoint\WorklogEndpoint;
+use Gojira\Jira\Response\WorklogResponse;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -54,8 +50,8 @@ class UpdateCommand extends AbstractCommand
             ->setHelp($help)
             ->addArgument(IssueEndpoint::ENDPOINT, InputArgument::REQUIRED, 'JIRA issue of worklog')
             ->addArgument(ResponseInterface::ID, InputArgument::REQUIRED, 'Worklog ID need to change')
-            ->addArgument(IssueEndpoint::PAYLOAD_TIME_SPENT, InputArgument::REQUIRED, 'How much time spent')
-            ->addArgument(IssueEndpoint::PAYLOAD_COMMENT, InputArgument::OPTIONAL, 'What did you do')
+            ->addArgument(WorklogEndpoint::PAYLOAD_TIME_SPENT, InputArgument::REQUIRED, 'How much time spent')
+            ->addArgument(WorklogEndpoint::PAYLOAD_COMMENT, InputArgument::OPTIONAL, 'What did you do')
             ->addOption(self::OPT_STARTED_AT, 's', InputOption::VALUE_OPTIONAL, 'Set date of work (default is now)');
     }
 
@@ -67,39 +63,26 @@ class UpdateCommand extends AbstractCommand
         if ($this->authentication->isAuth()) {
             $issue = $input->getArgument(IssueEndpoint::ENDPOINT);
             $worklogId = $input->getArgument(ResponseInterface::ID);
-            $timeSpent = $input->getArgument(IssueEndpoint::PAYLOAD_TIME_SPENT);
-            $comment = $input->getArgument(IssueEndpoint::PAYLOAD_COMMENT);
+            $timeSpent = $input->getArgument(WorklogEndpoint::PAYLOAD_TIME_SPENT);
+            $comment = $input->getArgument(WorklogEndpoint::PAYLOAD_COMMENT);
             $startedAt = $input->getOption(self::OPT_STARTED_AT) ?: 'now';
 
-            $dt = new \DateTime($startedAt, new \DateTimeZone($this->getOptionItem(OptionsInterface::TIMEZONE)));
-            $started = $dt->format('Y-m-d\TH:i:s.000') . $dt->format('O');
+            $dateTime = new \DateTime($startedAt, new \DateTimeZone($this->getOptionItem(OptionsInterface::TIMEZONE)));
+            $started = $dateTime->format('Y-m-d\TH:i:s.000') . $dateTime->format('O');
 
-            try {
-                $response = $this->getResponse([
-                    IssueEndpoint::ENDPOINT           => $issue,
-                    ResponseInterface::ID             => $worklogId,
-                    IssueEndpoint::PAYLOAD_COMMENT    => $comment,
-                    IssueEndpoint::PAYLOAD_TIME_SPENT => $timeSpent,
-                    IssueEndpoint::PAYLOAD_STARTED    => $started
-                ]);
-                $rows = $this->renderResult($response, $this->getName());
-                if ($this->getApiClient()->getResultHttpCode() === StatusCodes::HTTP_OK) {
-                    $this->renderTable($output, [
-                        TableInterface::HEADERS => ['ID', 'Date', 'Author', 'Time Spent', 'Comment'],
-                        TableInterface::ROWS    => Table::buildRows($rows)
-                    ]);
-                    $output->writeln(__('<info>Worklog to issue [%1] was updated!</info>', $issue));
-                }
-            } catch (ApiException $e) {
-                if ($e instanceof HttpNotFoundException || $e instanceof UnauthorizedException) {
-                    $output->writeln(__(
-                        '<error>%1</error>',
-                        StatusCodes::getMessageForCode($this->getApiClient()->getResultHttpCode())
-                    ));
-                } else {
-                    $output->writeln(__('<error>Something went wrong.</error>'));
-                }
-            }
+            $this->doExecute(
+                $output,
+                StatusCodes::HTTP_OK,
+                [
+                    IssueEndpoint::ENDPOINT => $issue,
+                    ResponseInterface::ID => $worklogId,
+                    WorklogEndpoint::PAYLOAD_COMMENT => $comment,
+                    WorklogEndpoint::PAYLOAD_TIME_SPENT => $timeSpent,
+                    WorklogEndpoint::PAYLOAD_STARTED => $started
+                ],
+                ['ID', 'Date', 'Author', 'Time Spent', 'Comment'],
+                __('<info>Worklog to issue [%1] was updated!</info>', $issue)
+            );
         }
     }
 
@@ -108,14 +91,14 @@ class UpdateCommand extends AbstractCommand
      */
     protected function getResponse($filters = [])
     {
-        $issueEndpoint = new IssueEndpoint($this->getApiClient());
+        $worklogEndpoint = new WorklogEndpoint($this->getApiClient());
 
-        return $issueEndpoint->updateWorklog(
+        return $worklogEndpoint->updateWorklog(
             $filters[IssueEndpoint::ENDPOINT],
             $filters[ResponseInterface::ID],
-            $filters[IssueEndpoint::PAYLOAD_TIME_SPENT],
-            $filters[IssueEndpoint::PAYLOAD_COMMENT],
-            $filters[IssueEndpoint::PAYLOAD_STARTED]
+            $filters[WorklogEndpoint::PAYLOAD_TIME_SPENT],
+            $filters[WorklogEndpoint::PAYLOAD_COMMENT],
+            $filters[WorklogEndpoint::PAYLOAD_STARTED]
         );
     }
 
@@ -124,6 +107,6 @@ class UpdateCommand extends AbstractCommand
      */
     protected function renderResult($response = [], $type = null)
     {
-        return (new IssueResponse($response))->render($type);
+        return (new WorklogResponse($response))->render($type);
     }
 }

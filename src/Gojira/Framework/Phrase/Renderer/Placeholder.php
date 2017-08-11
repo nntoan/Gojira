@@ -6,13 +6,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Gojira\Api\Phrase\Renderer;
+namespace Gojira\Framework\Phrase\Renderer;
+
+use Gojira\Framework\Phrase\RendererInterface;
 
 /**
  * Placeholder renderer
  * __('format %1 %2 %3', $var1, $var2, $var3)
  *
- * @package Gojira\Api\Phrase\Renderer
+ * @package Gojira\Framework\Phrase\Renderer
  * @author  Toan Nguyen <me@nntoan.com>
  */
 class Placeholder implements RendererInterface
@@ -20,8 +22,8 @@ class Placeholder implements RendererInterface
     /**
      * Render source text
      *
-     * @param [] $source
-     * @param [] $arguments
+     * @param array $source
+     * @param array $arguments
      * @return string
      */
     public function render(array $source, array $arguments)

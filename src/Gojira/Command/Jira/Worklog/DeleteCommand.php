@@ -15,6 +15,8 @@ use Gojira\Api\Request\StatusCodes;
 use Gojira\Api\Response\ResponseInterface;
 use Gojira\Command\Jira\AbstractCommand;
 use Gojira\Jira\Endpoint\IssueEndpoint;
+use Gojira\Jira\Endpoint\WorklogEndpoint;
+use Gojira\Jira\Response\WorklogResponse;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -65,14 +67,12 @@ class DeleteCommand extends AbstractCommand
                     $output->writeln(__('<info>Worklog [%1] of issue [%2] was delete!</info>', $worklogId, $issue));
                 }
             } catch (ApiException $e) {
+                $message = 'Something went wrong.';
                 if ($e instanceof HttpNotFoundException || $e instanceof UnauthorizedException) {
-                    $output->writeln(__(
-                        '<error>%1</error>',
-                        StatusCodes::getMessageForCode($this->getApiClient()->getResultHttpCode())
-                    ));
-                } else {
-                    $output->writeln(__('<error>Something went wrong.</error>'));
+                    $message = StatusCodes::getMessageForCode($this->getApiClient()->getResultHttpCode());
                 }
+
+                $output->writeln(__('<error>%1</error>', $message));
             }
         }
     }
@@ -82,9 +82,9 @@ class DeleteCommand extends AbstractCommand
      */
     protected function getResponse($filters = [])
     {
-        $issueEndpoint = new IssueEndpoint($this->getApiClient());
+        $worklogEndpoint = new WorklogEndpoint($this->getApiClient());
 
-        return $issueEndpoint->deleteWorklog(
+        return $worklogEndpoint->deleteWorklog(
             $filters[IssueEndpoint::ENDPOINT],
             $filters[ResponseInterface::ID]
         );
@@ -95,6 +95,6 @@ class DeleteCommand extends AbstractCommand
      */
     protected function renderResult($response = [], $type = null)
     {
-        return null;
+        return (new WorklogResponse($response))->render($type);
     }
 }

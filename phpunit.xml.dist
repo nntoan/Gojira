@@ -1,41 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright © 2017 Toan Nguyen. All rights reserved.
+  ~
+  ~ For the full copyright and license information, please view the LICENSE
+  ~ file that was distributed with this source code.
+  -->
 
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.1/phpunit.xsd"
-         backupGlobals="false"
-         backupStaticAttributes="false"
          colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="false"
-         syntaxCheck="false"
-         bootstrap="src/Gojira/bootstrap.php">
-
-    <php>
-        <ini name="error_reporting" value="-1"/>
-        <ini name="intl.default_locale" value="en"/>
-        <ini name="intl.error_level" value="0"/>
-        <ini name="memory_limit" value="-1"/>
-    </php>
-
+         bootstrap="tests/Gojira/bootstrap.php">
     <testsuites>
-        <testsuite name="Gojira Test Suite">
-            <directory>./tests/Gojira/</directory>
+        <testsuite name="Gojira Unit Tests">
+            <directory suffix="Test.php">./tests/Gojira/Tests/*</directory>
         </testsuite>
     </testsuites>
-
+    <php>
+        <ini name="date.timezone" value="America/Los_Angeles"/>
+        <ini name="xdebug.max_nesting_level" value="200"/>
+    </php>
     <groups>
         <exclude>
             <group>benchmark</group>
             <group>intl-data</group>
         </exclude>
     </groups>
-
     <filter>
-        <whitelist>
-            <directory>./src</directory>
+        <whitelist addUncoveredFilesFromWhiteList="true">
+            <directory suffix=".php">./src</directory>
+            <exclude>
+                <file>./src/Gojira/autoload.php</file>
+                <file>./src/Gojira/bootstrap.php</file>
+                <file>./src/Gojira/functions.php</file>
+                <directory>./tests/Gojira/Tests/*</directory>
+            </exclude>
         </whitelist>
     </filter>
 </phpunit>

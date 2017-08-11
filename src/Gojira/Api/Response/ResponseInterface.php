@@ -17,11 +17,17 @@ namespace Gojira\Api\Response;
 interface ResponseInterface
 {
     /**
+     * COMMON
+     */
+    const ID = 'id';
+    const NAME = 'name';
+    const FIELDS = 'fields';
+
+    /**
      * ISSUES SECTION
      */
     const ISSUES = 'issues';
     const KEY = 'key';
-    const FIELDS = 'fields';
     const PRIORITY = 'priority';
     const SUMMARY = 'summary';
     const STATUS = 'status';
@@ -30,13 +36,17 @@ interface ResponseInterface
      * WORKLOG SECTION
      */
     const WORKLOGS = 'worklogs';
-    const ID = 'id';
     const CREATED = 'created';
     const AUTHOR = 'author';
     const DISPLAY_NAME = 'displayName';
     const TIME_SPENT = 'timeSpent';
     const COMMENT = 'comment';
     const TOTAL = 'total';
+
+    /**
+     * TRANSITIONS SECTION
+     */
+    const TRANSITIONS = 'transitions';
 
     /**
      * PRIORITY SECTION
@@ -49,7 +59,6 @@ interface ResponseInterface
     /**
      * MISC
      */
-    const NAME = 'name';
     const STARTED = 'started';
     const ISSUE = 'issue';
     const ERROR_MESSAGE = 'errorMessages';

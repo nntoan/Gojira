@@ -6,17 +6,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Gojira\Api\Configuration;
-
-use JMS\Serializer\SerializerBuilder;
+namespace Gojira\Framework\Serializer;
 
 /**
- * Base class for Serializer
+ * Serializer interface
  *
- * @package Gojira\Api\Configuration
+ * @package Gojira\Framework\Serializer
  * @author  Toan Nguyen <me@nntoan.com>
  */
-class Serializer
+interface SerializerInterface
 {
     /**
      * Encode data to JSON-object
@@ -25,10 +23,7 @@ class Serializer
      *
      * @return string
      */
-    public static function encode(array $data)
-    {
-        return SerializerBuilder::create()->build()->serialize($data, 'json');
-    }
+    public static function encode(array $data);
 
     /**
      * Decode JSON-string to array
@@ -37,8 +32,5 @@ class Serializer
      *
      * @return array
      */
-    public static function decode($data)
-    {
-        return SerializerBuilder::create()->build()->deserialize($data, 'array', 'json');
-    }
+    public static function decode($data);
 }

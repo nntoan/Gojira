@@ -12,7 +12,7 @@ use Gojira\Api\Data\DataObject;
 use Gojira\Application;
 
 /**
- * Class Path
+ * Base class to work with path items
  *
  * @package Gojira\Api\Configuration
  * @author  Toan Nguyen <me@nntoan.com>
@@ -79,6 +79,7 @@ class Path extends DataObject implements PathInterface
      * Returns the user's home directory
      *
      * @return null|string
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     private function getHomePath()
     {

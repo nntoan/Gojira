@@ -8,9 +8,6 @@
 
 namespace Gojira\Command\Jira\Issues;
 
-use Gojira\Api\Exception\ApiException;
-use Gojira\Api\Exception\HttpNotFoundException;
-use Gojira\Api\Exception\UnauthorizedException;
 use Gojira\Api\Request\StatusCodes;
 use Gojira\Command\Jira\AbstractCommand;
 use Gojira\Jira\Endpoint\IssueEndpoint;
@@ -56,28 +53,13 @@ class AssignCommand extends AbstractCommand
             $issue = $input->getArgument(IssueEndpoint::ENDPOINT);
             $assignee = $input->getArgument(IssueEndpoint::EP_ASSIGNEE) ?: $this->authentication->getUsername();
 
-            try {
-                $this->getResponse([
-                    IssueEndpoint::ENDPOINT => $issue,
-                    IssueEndpoint::EP_ASSIGNEE => $assignee
-                ]);
-                if ($this->getApiClient()->getResultHttpCode() === StatusCodes::HTTP_NO_CONTENT) {
-                    $output->writeln(__(
-                        '<info>Issue [%1] assigned to </info> <yellow>%2</yellow>.',
-                        $issue,
-                        $assignee
-                    ));
-                }
-            } catch (ApiException $e) {
-                if ($e instanceof HttpNotFoundException || $e instanceof UnauthorizedException) {
-                    $output->writeln(__(
-                        '<error>%1</error>',
-                        StatusCodes::getMessageForCode($this->getApiClient()->getResultHttpCode())
-                    ));
-                } else {
-                    $output->writeln(__('<error>Something went wrong.</error>'));
-                }
-            }
+            $this->doExecute(
+                $output,
+                StatusCodes::HTTP_NO_CONTENT,
+                [IssueEndpoint::ENDPOINT => $issue, IssueEndpoint::EP_ASSIGNEE => $assignee],
+                [],
+                __('<info>Issue [%1] assigned to </info> <comment>%2</comment>.', $issue, $assignee)
+            );
         }
     }
 

@@ -9,15 +9,11 @@
 namespace Gojira\Command\Jira\Worklog;
 
 use Gojira\Api\Configuration\OptionsInterface;
-use Gojira\Api\Data\TableInterface;
-use Gojira\Api\Exception\ApiException;
-use Gojira\Api\Exception\HttpNotFoundException;
-use Gojira\Api\Exception\UnauthorizedException;
 use Gojira\Api\Request\StatusCodes;
 use Gojira\Command\Jira\AbstractCommand;
 use Gojira\Jira\Endpoint\IssueEndpoint;
-use Gojira\Jira\Response\IssueResponse;
-use Gojira\Provider\Console\Table;
+use Gojira\Jira\Endpoint\WorklogEndpoint;
+use Gojira\Jira\Response\WorklogResponse;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -38,8 +34,8 @@ class AddCommand extends AbstractCommand
      */
     protected function configure()
     {
-        $help = sprintf(
-            "Worklog Add Help:\n%s\n%s\n%s",
+        $help = __(
+            "Worklog Add Help:\n%1\n%2\n%3",
             ' <issue>: JIRA issue to log work for',
             ' <timeSpent>: How much time spent (e.g. \'3h 30m\')',
             ' <comment> (optional) Describe what did you do'
@@ -51,8 +47,8 @@ class AddCommand extends AbstractCommand
             ->setAliases(['wlog:a', 'worklogadd'])
             ->setHelp($help)
             ->addArgument(IssueEndpoint::ENDPOINT, InputArgument::REQUIRED, 'JIRA issue to log work for')
-            ->addArgument(IssueEndpoint::PAYLOAD_TIME_SPENT, InputArgument::REQUIRED, 'How much time spent')
-            ->addArgument(IssueEndpoint::PAYLOAD_COMMENT, InputArgument::OPTIONAL, 'What did you do')
+            ->addArgument(WorklogEndpoint::PAYLOAD_TIME_SPENT, InputArgument::REQUIRED, 'How much time spent')
+            ->addArgument(WorklogEndpoint::PAYLOAD_COMMENT, InputArgument::OPTIONAL, 'What did you do')
             ->addOption(self::OPT_STARTED_AT, 's', InputOption::VALUE_OPTIONAL, 'Set date of work (default is now)');
     }
 
@@ -63,38 +59,25 @@ class AddCommand extends AbstractCommand
     {
         if ($this->authentication->isAuth()) {
             $issue = $input->getArgument(IssueEndpoint::ENDPOINT);
-            $timeSpent = $input->getArgument(IssueEndpoint::PAYLOAD_TIME_SPENT);
-            $comment = $input->getArgument(IssueEndpoint::PAYLOAD_COMMENT);
+            $timeSpent = $input->getArgument(WorklogEndpoint::PAYLOAD_TIME_SPENT);
+            $comment = $input->getArgument(WorklogEndpoint::PAYLOAD_COMMENT) ?: 'Comment is too precious to be added.';
             $startedAt = $input->getOption(self::OPT_STARTED_AT) ?: 'now';
 
-            $dt = new \DateTime($startedAt, new \DateTimeZone($this->getOptionItem(OptionsInterface::TIMEZONE)));
-            $started = $dt->format('Y-m-d\TH:i:s.000') . $dt->format('O');
+            $dateTime = new \DateTime($startedAt, new \DateTimeZone($this->getOptionItem(OptionsInterface::TIMEZONE)));
+            $started = $dateTime->format('Y-m-d\TH:i:s.000') . $dateTime->format('O');
 
-            try {
-                $response = $this->getResponse([
+            $this->doExecute(
+                $output,
+                StatusCodes::HTTP_CREATED,
+                [
                     IssueEndpoint::ENDPOINT => $issue,
-                    IssueEndpoint::PAYLOAD_COMMENT => $comment,
-                    IssueEndpoint::PAYLOAD_TIME_SPENT => $timeSpent,
-                    IssueEndpoint::PAYLOAD_STARTED => $started
-                ]);
-                $rows = $this->renderResult($response, $this->getName());
-                if ($this->getApiClient()->getResultHttpCode() === StatusCodes::HTTP_CREATED) {
-                    $this->renderTable($output, [
-                        TableInterface::HEADERS => ['ID', 'Date', 'Author', 'Time Spent', 'Comment'],
-                        TableInterface::ROWS => Table::buildRows($rows)
-                    ]);
-                    $output->writeln(__('<info>Worklog to issue [%1] was added!</info>', $issue));
-                }
-            } catch (ApiException $e) {
-                if ($e instanceof HttpNotFoundException || $e instanceof UnauthorizedException) {
-                    $output->writeln(__(
-                        '<error>%1</error>',
-                        StatusCodes::getMessageForCode($this->getApiClient()->getResultHttpCode())
-                    ));
-                } else {
-                    $output->writeln(__('<error>Something went wrong.</error>'));
-                }
-            }
+                    WorklogEndpoint::PAYLOAD_COMMENT => $comment,
+                    WorklogEndpoint::PAYLOAD_TIME_SPENT => $timeSpent,
+                    WorklogEndpoint::PAYLOAD_STARTED => $started
+                ],
+                ['ID', 'Date', 'Author', 'Time Spent', 'Comment'],
+                __('<info>Worklog to issue [%1] was added!</info>', $issue)
+            );
         }
     }
 
@@ -103,12 +86,12 @@ class AddCommand extends AbstractCommand
      */
     protected function getResponse($filters = [])
     {
-        $issueEndpoint = new IssueEndpoint($this->getApiClient());
-        return $issueEndpoint->addWorklog(
+        $worklogEndpoint = new WorklogEndpoint($this->getApiClient());
+        return $worklogEndpoint->addWorklog(
             $filters[IssueEndpoint::ENDPOINT],
-            $filters[IssueEndpoint::PAYLOAD_TIME_SPENT],
-            $filters[IssueEndpoint::PAYLOAD_COMMENT],
-            $filters[IssueEndpoint::PAYLOAD_STARTED]
+            $filters[WorklogEndpoint::PAYLOAD_TIME_SPENT],
+            $filters[WorklogEndpoint::PAYLOAD_COMMENT],
+            $filters[WorklogEndpoint::PAYLOAD_STARTED]
         );
     }
 
@@ -117,6 +100,6 @@ class AddCommand extends AbstractCommand
      */
     protected function renderResult($response = [], $type = null)
     {
-        return (new IssueResponse($response))->render($type);
+        return (new WorklogResponse($response))->render($type);
     }
 }
