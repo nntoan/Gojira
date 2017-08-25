@@ -1,0 +1,5 @@
+exclude_patterns:
+    - src/Gojira/autoload.php
+    - src/Gojira/bootstrap.php
+    - src/Gojira/functions.php
+    - src/Gojira/Framework/Data/DataObject.php
