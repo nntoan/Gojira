@@ -6,14 +6,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Gojira\Api\Configuration;
+namespace Gojira\Framework\App\Configuration;
 
-use Gojira\Api\Data\DataObject;
+use Gojira\Framework\Data\DataObject;
 
 /**
  * Base class to work with option items
  *
- * @package Gojira\Api\Configuration
+ * @package Gojira\Framework\App\Configuration
  * @author  Toan Nguyen <me@nntoan.com>
  */
 class Options extends DataObject implements OptionsInterface
@@ -67,7 +67,9 @@ class Options extends DataObject implements OptionsInterface
                 'In Progress',
                 'Reopened',
                 'To Do',
-                'In Review'
+                'In Review',
+                'Blocked',
+                'Internal Testing'
             ]
         ];
     }

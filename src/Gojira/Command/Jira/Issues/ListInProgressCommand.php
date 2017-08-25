@@ -8,15 +8,10 @@
 
 namespace Gojira\Command\Jira\Issues;
 
-use Gojira\Api\Data\TableInterface;
-use Gojira\Api\Exception\ApiException;
-use Gojira\Api\Exception\HttpNotFoundException;
-use Gojira\Api\Exception\UnauthorizedException;
 use Gojira\Api\Request\StatusCodes;
 use Gojira\Command\Jira\AbstractCommand;
 use Gojira\Jira\Endpoint\JqlEndpoint;
 use Gojira\Jira\Response\JqlResponse;
-use Gojira\Provider\Console\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

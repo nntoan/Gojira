@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Gojira\Api\Data;
+namespace Gojira\Framework\App\Console;
 
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Table interface for console application
  *
- * @package Gojira\Api\Data
+ * @package Gojira\Framework\App\Console
  * @author  Toan Nguyen <me@nntoan.com>
  */
 interface TableInterface

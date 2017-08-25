@@ -29,8 +29,8 @@ class EncryptorTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->randomGenerator = $this->getMock('\Gojira\Framework\Math\Random', [], [], '', false);
-        /** @var \Gojira\Api\Configuration\Configuration|\PHPUnit_Framework_MockObject_MockObject $appConfigMock */
-        $appConfigMock = $this->getMock('\Gojira\Api\Configuration\Configuration', [], [], '', false);
+        /** @var \Gojira\Framework\App\Configuration\Configuration|\PHPUnit_Framework_MockObject_MockObject $appConfigMock */
+        $appConfigMock = $this->getMock('\Gojira\Framework\App\Configuration\Configuration', [], [], '', false);
         $appConfigMock->expects($this->any())
             ->method('getData')
             ->with(Encryptor::PARAM_CRYPT_KEY)
@@ -45,8 +45,8 @@ class EncryptorTest extends \PHPUnit_Framework_TestCase
      */
     public function testEncryptWithEmptyKey($key)
     {
-        /** @var \Gojira\Api\Configuration\Configuration|\PHPUnit_Framework_MockObject_MockObject $appConfigMock */
-        $appConfigMock = $this->getMock('\Gojira\Api\Configuration\Configuration', [], [], '', false);
+        /** @var \Gojira\Framework\App\Configuration\Configuration|\PHPUnit_Framework_MockObject_MockObject $appConfigMock */
+        $appConfigMock = $this->getMock('\Gojira\Framework\App\Configuration\Configuration', [], [], '', false);
         $appConfigMock->expects($this->any())
             ->method('getData')
             ->with(Encryptor::PARAM_CRYPT_KEY)
@@ -68,8 +68,8 @@ class EncryptorTest extends \PHPUnit_Framework_TestCase
      */
     public function testDecryptWithEmptyKey($key)
     {
-        /** @var \Gojira\Api\Configuration\Configuration|\PHPUnit_Framework_MockObject_MockObject $appConfigMock */
-        $appConfigMock = $this->getMock('\Gojira\Api\Configuration\Configuration', [], [], '', false);
+        /** @var \Gojira\Framework\App\Configuration\Configuration|\PHPUnit_Framework_MockObject_MockObject $appConfigMock */
+        $appConfigMock = $this->getMock('\Gojira\Framework\App\Configuration\Configuration', [], [], '', false);
         $appConfigMock->expects($this->any())
             ->method('getData')
             ->with(Encryptor::PARAM_CRYPT_KEY)
@@ -121,8 +121,8 @@ class EncryptorTest extends \PHPUnit_Framework_TestCase
 
     public function testEncryptDecryptNewKeyAdded()
     {
-        /** @var \Gojira\Api\Configuration\Configuration|\PHPUnit_Framework_MockObject_MockObject $appConfigMock */
-        $appConfigMock = $this->getMock('\Gojira\Api\Configuration\Configuration', [], [], '', false);
+        /** @var \Gojira\Framework\App\Configuration\Configuration|\PHPUnit_Framework_MockObject_MockObject $appConfigMock */
+        $appConfigMock = $this->getMock('\Gojira\Framework\App\Configuration\Configuration', [], [], '', false);
         $appConfigMock->expects($this->at(0))
             ->method('getData')
             ->with(Encryptor::PARAM_CRYPT_KEY)

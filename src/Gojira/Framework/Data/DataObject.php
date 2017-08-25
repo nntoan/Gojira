@@ -6,12 +6,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Gojira\Api\Data;
+namespace Gojira\Framework\Data;
 
 /**
  * Class DataObject
  *
- * @package Gojira\Api\Data
+ * @package Gojira\Framework\Data
  * @author  Toan Nguyen <me@nntoan.com>
  */
 class DataObject implements DataInterface
@@ -113,7 +113,7 @@ class DataObject implements DataInterface
             } elseif (is_string($data)) {
                 $data = explode(PHP_EOL, $data);
                 $data = isset($data[$index]) ? $data[$index] : null;
-            } elseif ($data instanceof \Gojira\Api\Data\DataObject) {
+            } elseif ($data instanceof \Gojira\Framework\Data\DataObject) {
                 $data = $data->getData($index);
             } else {
                 $data = null;
@@ -141,7 +141,7 @@ class DataObject implements DataInterface
         foreach ($keys as $key) {
             if ((array)$data === $data && isset($data[$key])) {
                 $data = $data[$key];
-            } elseif ($data instanceof \Gojira\Api\Data\DataObject) {
+            } elseif ($data instanceof \Gojira\Framework\Data\DataObject) {
                 $data = $data->getDataByKey($key);
             } else {
                 return null;

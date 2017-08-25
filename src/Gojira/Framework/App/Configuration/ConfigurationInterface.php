@@ -6,12 +6,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Gojira\Api\Configuration;
+namespace Gojira\Framework\App\Configuration;
 
 /**
  * Interface for configuration items
  *
- * @package Gojira\Api\Configuration
+ * @package Gojira\Framework\App\Configuration
  * @author  Toan Nguyen <me@nntoan.com>
  */
 interface ConfigurationInterface

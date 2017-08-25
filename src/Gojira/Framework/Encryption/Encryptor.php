@@ -8,7 +8,7 @@
 
 namespace Gojira\Framework\Encryption;
 
-use Gojira\Api\Configuration\Configuration;
+use Gojira\Framework\App\Configuration\Configuration;
 use Gojira\Framework\Math\Random;
 
 /**

@@ -6,12 +6,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Gojira\Api\Data;
+namespace Gojira\Framework\Data;
 
 /**
  * Interface to work with data-object
  *
- * @package Gojira\Api\Data
+ * @package Gojira\Framework\Data
  * @author  Toan Nguyen <me@nntoan.com>
  */
 interface DataInterface
@@ -23,7 +23,7 @@ interface DataInterface
      *
      * @param array $arr
      *
-     * @return \Gojira\Api\Data\DataInterface
+     * @return \Gojira\Framework\Data\DataInterface
      */
     public function addData(array $arr);
 
@@ -38,7 +38,7 @@ interface DataInterface
      * @param string|array $key
      * @param mixed        $value
      *
-     * @return \Gojira\Api\Data\DataInterface
+     * @return \Gojira\Framework\Data\DataInterface
      */
     public function setData($key, $value);
 
@@ -48,7 +48,7 @@ interface DataInterface
      * @param string $key
      * @param mixed  $args
      *
-     * @return \Gojira\Api\Data\DataInterface
+     * @return \Gojira\Framework\Data\DataInterface
      */
     public function setDataUsingMethod($key, $args = []);
 
@@ -57,7 +57,7 @@ interface DataInterface
      *
      * @param null|string|array $key
      *
-     * @return \Gojira\Api\Data\DataInterface
+     * @return \Gojira\Framework\Data\DataInterface
      */
     public function unsetData($key = null);
 

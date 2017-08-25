@@ -58,22 +58,16 @@ class DeleteCommand extends AbstractCommand
             $issue = $input->getArgument(IssueEndpoint::ENDPOINT);
             $worklogId = $input->getArgument(ResponseInterface::ID);
 
-            try {
-                $this->getResponse([
+            $this->doExecute(
+                $output,
+                StatusCodes::HTTP_NO_CONTENT,
+                [
                     IssueEndpoint::ENDPOINT => $issue,
-                    ResponseInterface::ID   => $worklogId
-                ]);
-                if ($this->getApiClient()->getResultHttpCode() === StatusCodes::HTTP_NO_CONTENT) {
-                    $output->writeln(__('<info>Worklog [%1] of issue [%2] was delete!</info>', $worklogId, $issue));
-                }
-            } catch (ApiException $e) {
-                $message = 'Something went wrong.';
-                if ($e instanceof HttpNotFoundException || $e instanceof UnauthorizedException) {
-                    $message = StatusCodes::getMessageForCode($this->getApiClient()->getResultHttpCode());
-                }
-
-                $output->writeln(__('<error>%1</error>', $message));
-            }
+                    ResponseInterface::ID => $worklogId
+                ],
+                [],
+                __('<info>Worklog [%1] of issue [%2] was delete!</info>', $worklogId, $issue)
+            );
         }
     }
 

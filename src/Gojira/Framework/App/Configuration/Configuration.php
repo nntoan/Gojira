@@ -6,16 +6,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Gojira\Api\Configuration;
+namespace Gojira\Framework\App\Configuration;
 
-use Gojira\Api\Data\DataObject;
+use Gojira\Framework\Data\DataObject;
 use Gojira\Framework\Serializer\Serializer;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Base class to work with configuration items
  *
- * @package Gojira\Api\Configuration
+ * @package Gojira\Framework\App\Configuration
  * @author  Toan Nguyen <me@nntoan.com>
  */
 class Configuration extends DataObject implements ConfigurationInterface

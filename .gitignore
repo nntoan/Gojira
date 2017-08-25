@@ -1,5 +1,5 @@
 /vendor/
 /phpunit.xml
 /build/
-/docs/.build
+/docs/
 /composer.lock

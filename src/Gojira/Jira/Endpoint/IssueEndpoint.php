@@ -8,7 +8,7 @@
 
 namespace Gojira\Jira\Endpoint;
 
-use Gojira\Api\Configuration\Serializer;
+use Gojira\Framework\Serializer\Serializer;
 use Gojira\Api\Endpoint\BaseEndpoint;
 use Gojira\Api\Endpoint\EndpointInterface;
 use Gojira\Api\Request\HttpMethod;

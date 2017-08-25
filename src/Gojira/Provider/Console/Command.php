@@ -9,10 +9,10 @@
 namespace Gojira\Provider\Console;
 
 use Gojira\Api\Authentication\JiraBasicAuthentication;
-use Gojira\Api\Configuration\Auth;
-use Gojira\Api\Configuration\Configuration;
-use Gojira\Api\Configuration\Options;
-use Gojira\Api\Configuration\Path;
+use Gojira\Framework\App\Configuration\Auth;
+use Gojira\Framework\App\Configuration\Configuration;
+use Gojira\Framework\App\Configuration\Options;
+use Gojira\Framework\App\Configuration\Path;
 use Gojira\Framework\Math\Random;
 use Gojira\Framework\ObjectManager\ObjectManager;
 use Symfony\Component\Console\Command\Command as BaseCommand;
@@ -29,7 +29,7 @@ use Symfony\Component\Console\Command\Command as BaseCommand;
 abstract class Command extends BaseCommand
 {
     /**
-     * @var \Gojira\Api\Configuration\Configuration
+     * @var \Gojira\Framework\App\Configuration\Configuration
      */
     protected $configuration = null;
 
@@ -39,17 +39,17 @@ abstract class Command extends BaseCommand
     protected $authentication = null;
 
     /**
-     * @var \Gojira\Api\Configuration\Path
+     * @var \Gojira\Framework\App\Configuration\Path
      */
     protected $pathConfig = null;
 
     /**
-     * @var \Gojira\Api\Configuration\Auth
+     * @var \Gojira\Framework\App\Configuration\Auth
      */
     protected $authConfig = null;
 
     /**
-     * @var \Gojira\Api\Configuration\Options
+     * @var \Gojira\Framework\App\Configuration\Options
      */
     protected $optionConfig = null;
 

@@ -8,8 +8,8 @@
 
 namespace Gojira\Api\Authentication;
 
-use Gojira\Api\Configuration\AuthInterface;
-use Gojira\Api\Configuration\ConfigurationInterface;
+use Gojira\Framework\App\Configuration\AuthInterface;
+use Gojira\Framework\App\Configuration\ConfigurationInterface;
 
 /**
  * JIRA basic authentication class get token from config
@@ -35,7 +35,7 @@ class JiraBasicAuthentication implements AuthenticationInterface
     protected $authItems = [];
 
     /**
-     * @var \Gojira\Api\Configuration\Configuration
+     * @var \Gojira\Framework\App\Configuration\Configuration
      */
     protected $configuration;
 

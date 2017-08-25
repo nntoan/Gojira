@@ -13,7 +13,7 @@ use JMS\Serializer\SerializerBuilder;
 /**
  * Base class for Serializer
  *
- * @package Gojira\Api\Configuration
+ * @package Gojira\Framework\Serializer
  * @author  Toan Nguyen <me@nntoan.com>
  */
 class Serializer implements SerializerInterface

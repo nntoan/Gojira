@@ -8,7 +8,7 @@
 
 namespace Gojira\Command\Jira\Worklog;
 
-use Gojira\Api\Configuration\OptionsInterface;
+use Gojira\Framework\App\Configuration\OptionsInterface;
 use Gojira\Api\Request\StatusCodes;
 use Gojira\Command\Jira\AbstractCommand;
 use Gojira\Jira\Endpoint\IssueEndpoint;

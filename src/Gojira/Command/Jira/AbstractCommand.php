@@ -9,10 +9,10 @@
 namespace Gojira\Command\Jira;
 
 use Gojira\Api\Client\GuzzleClient;
-use Gojira\Api\Configuration\AuthInterface;
-use Gojira\Api\Configuration\ConfigurationInterface;
-use Gojira\Api\Configuration\OptionsInterface;
-use Gojira\Api\Data\TableInterface;
+use Gojira\Framework\App\Configuration\AuthInterface;
+use Gojira\Framework\App\Configuration\ConfigurationInterface;
+use Gojira\Framework\App\Configuration\OptionsInterface;
+use Gojira\Framework\App\Console\TableInterface;
 use Gojira\Api\Exception\ApiException;
 use Gojira\Api\Exception\HttpNotFoundException;
 use Gojira\Api\Exception\UnauthorizedException;
@@ -84,6 +84,7 @@ abstract class AbstractCommand extends Command
         try {
             $response = $this->getResponse($filters);
             $rows = $this->renderResult($response, $this->getName());
+
             if ($this->getApiClient()->getResultHttpCode() === $acceptedStatusCode) {
                 if (!empty($tableHeaders)) {
                     $this->renderTable($output, [

@@ -9,9 +9,9 @@
 namespace Gojira\Command;
 
 use Gojira\Api\Authentication\BasicAuthentication;
-use Gojira\Api\Configuration\AuthInterface;
-use Gojira\Api\Configuration\ConfigurationInterface;
-use Gojira\Api\Configuration\OptionsInterface;
+use Gojira\Framework\App\Configuration\AuthInterface;
+use Gojira\Framework\App\Configuration\ConfigurationInterface;
+use Gojira\Framework\App\Configuration\OptionsInterface;
 use Gojira\Provider\Console\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

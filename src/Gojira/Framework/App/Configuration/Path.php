@@ -6,15 +6,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Gojira\Api\Configuration;
+namespace Gojira\Framework\App\Configuration;
 
-use Gojira\Api\Data\DataObject;
+use Gojira\Framework\Data\DataObject;
 use Gojira\Application;
 
 /**
  * Base class to work with path items
  *
- * @package Gojira\Api\Configuration
+ * @package Gojira\Framework\App\Configuration
  * @author  Toan Nguyen <me@nntoan.com>
  */
 class Path extends DataObject implements PathInterface

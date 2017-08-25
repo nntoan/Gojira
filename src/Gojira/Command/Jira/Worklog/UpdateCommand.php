@@ -8,7 +8,7 @@
 
 namespace Gojira\Command\Jira\Worklog;
 
-use Gojira\Api\Configuration\OptionsInterface;
+use Gojira\Framework\App\Configuration\OptionsInterface;
 use Gojira\Api\Request\StatusCodes;
 use Gojira\Api\Response\ResponseInterface;
 use Gojira\Command\Jira\AbstractCommand;
@@ -81,7 +81,7 @@ class UpdateCommand extends AbstractCommand
                     WorklogEndpoint::PAYLOAD_STARTED => $started
                 ],
                 ['ID', 'Date', 'Author', 'Time Spent', 'Comment'],
-                __('<info>Worklog to issue [%1] was updated!</info>', $issue)
+                __('<info>Worklog [%1] of issue [%2] was updated!</info>', $worklogId, $issue)
             );
         }
     }
