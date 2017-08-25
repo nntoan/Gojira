@@ -9,7 +9,7 @@
 namespace Gojira\Api\Client;
 
 use Gojira\Api\Authentication\JiraBasicAuthentication;
-use Gojira\Api\Configuration\Serializer;
+use Gojira\Framework\Serializer\Serializer;
 use Gojira\Api\Exception\ApiException;
 use Gojira\Api\Exception\HttpNotFoundException;
 use Gojira\Api\Exception\UnauthorizedException;
@@ -19,6 +19,7 @@ use Gojira\Api\Request\StatusCodes;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -187,13 +188,8 @@ class GuzzleClient extends BaseClient implements ClientInterface
             throw $e;
         }
 
-        $this->setHttpStatusCode($response->getStatusCode());
-
-        if ($this->getAccept() === 'application/json' && !empty($json = $response->getBody()->getContents())) {
-            $this->setData(Serializer::decode($json));
-        } else {
-            $this->setData($response->getBody()->getContents());
-        }
+        // Set body content, status code
+        $this->processResponse($response);
     }
 
     /**
@@ -288,5 +284,23 @@ class GuzzleClient extends BaseClient implements ClientInterface
         }
 
         return false;
+    }
+
+    /**
+     * Set body content for current client
+     *
+     * @param Response $response PSR-7 response object
+     *
+     * @return void
+     */
+    protected function processResponse(Response $response)
+    {
+        $this->setHttpStatusCode($response->getStatusCode());
+        $bodyContents = $response->getBody()->getContents();
+        if ($this->getAccept() === 'application/json' && !empty($bodyContents)) {
+            $bodyContents = Serializer::decode($bodyContents);
+        }
+
+        $this->setData($bodyContents);
     }
 }

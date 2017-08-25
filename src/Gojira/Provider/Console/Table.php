@@ -8,7 +8,7 @@
 
 namespace Gojira\Provider\Console;
 
-use Gojira\Api\Data\TableInterface;
+use Gojira\Framework\App\Console\TableInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\TableStyle;
 use Symfony\Component\Console\Helper\TableSeparator;

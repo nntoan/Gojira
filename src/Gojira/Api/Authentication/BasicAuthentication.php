@@ -27,11 +27,6 @@ class BasicAuthentication implements AuthenticationInterface
     protected $password;
 
     /**
-     * @var \Gojira\Api\Configuration\ConfigurationInterface
-     */
-    protected $configuration;
-
-    /**
      * Basic authenticate constructor.
      *
      * @param string $username Username

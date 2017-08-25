@@ -8,16 +8,10 @@
 
 namespace Gojira\Command\Jira\Issues;
 
-use Gojira\Api\Data\TableInterface;
-use Gojira\Api\Exception\ApiException;
-use Gojira\Api\Exception\HttpNotFoundException;
-use Gojira\Api\Exception\UnauthorizedException;
 use Gojira\Api\Request\StatusCodes;
 use Gojira\Command\Jira\AbstractCommand;
 use Gojira\Jira\Endpoint\JqlEndpoint;
 use Gojira\Jira\Response\JqlResponse;
-use Gojira\Provider\Console\Table;
-use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -55,25 +49,12 @@ class ListCommand extends AbstractCommand
             $type = $input->getOption(self::OPT_TYPE);
             $project = $input->getOption(self::OPT_PROJECT);
 
-            try {
-                $response = $this->getResponse([self::OPT_TYPE => $type, self::OPT_PROJECT => $project]);
-                $rows = $this->renderResult($response, $this->getName());
-                if ($this->getApiClient()->getResultHttpCode() === StatusCodes::HTTP_OK) {
-                    $this->renderTable($output, [
-                        TableInterface::HEADERS => ['Key', 'Priority', 'Summary', 'Status'],
-                        TableInterface::ROWS => Table::buildRows($rows)
-                    ]);
-                }
-            } catch (ApiException $e) {
-                if ($e instanceof HttpNotFoundException || $e instanceof UnauthorizedException) {
-                    $output->writeln(__(
-                        '<error>%1</error>',
-                        StatusCodes::getMessageForCode($this->getApiClient()->getResultHttpCode())
-                    ));
-                } else {
-                    $output->writeln(__('<error>Something went wrong.</error>'));
-                }
-            }
+            $this->doExecute(
+                $output,
+                StatusCodes::HTTP_OK,
+                [self::OPT_TYPE => $type, self::OPT_PROJECT => $project],
+                ['Key', 'Priority', 'Summary', 'Status']
+            );
         }
     }
 

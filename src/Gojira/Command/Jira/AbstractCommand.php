@@ -8,13 +8,15 @@
 
 namespace Gojira\Command\Jira;
 
-use Gojira\Api\Authentication\JiraBasicAuthentication;
 use Gojira\Api\Client\GuzzleClient;
-use Gojira\Api\Configuration\AuthInterface;
-use Gojira\Api\Configuration\Configuration;
-use Gojira\Api\Configuration\ConfigurationInterface;
-use Gojira\Api\Configuration\Options;
-use Gojira\Api\Configuration\OptionsInterface;
+use Gojira\Framework\App\Configuration\AuthInterface;
+use Gojira\Framework\App\Configuration\ConfigurationInterface;
+use Gojira\Framework\App\Configuration\OptionsInterface;
+use Gojira\Framework\App\Console\TableInterface;
+use Gojira\Api\Exception\ApiException;
+use Gojira\Api\Exception\HttpNotFoundException;
+use Gojira\Api\Exception\UnauthorizedException;
+use Gojira\Api\Request\StatusCodes;
 use Gojira\Provider\Console\Command;
 use Gojira\Provider\Console\Table;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -33,36 +35,14 @@ abstract class AbstractCommand extends Command
     protected $apiClient = null;
 
     /**
-     * @var \Gojira\Api\Configuration\Configuration
-     */
-    protected $configuration = null;
-
-    /**
-     * @var \Gojira\Api\Authentication\JiraBasicAuthentication
-     */
-    protected $authentication = null;
-
-    /**
      * @var \Gojira\Provider\Console\Table
      */
-    private $table = null;
+    protected $table = null;
 
     /**
      * @var array
      */
     protected $optionItems = null;
-
-    /**
-     * AbstractCommand constructor.
-     *
-     * @param null $name
-     */
-    public function __construct($name = null)
-    {
-        $this->configuration = new Configuration();
-        $this->authentication = new JiraBasicAuthentication($this->configuration);
-        parent::__construct($name);
-    }
 
     /**
      * Get response data w/ specified endpoint instance
@@ -82,6 +62,50 @@ abstract class AbstractCommand extends Command
      * @return mixed
      */
     abstract protected function renderResult($response = [], $type = null);
+
+    /**
+     * Abstract method for all execute() commands
+     *
+     * @param OutputInterface $output             Symfony console output
+     * @param int             $acceptedStatusCode HTTP status code to continue
+     * @param array           $filters            Payload/Params passing to endpoint
+     * @param array           $tableHeaders       Console table header
+     * @param string          $infoMessage        Info message after table rendered successfully
+     *
+     * @return void
+     */
+    protected function doExecute(
+        OutputInterface $output,
+        $acceptedStatusCode = StatusCodes::HTTP_OK,
+        array $filters = [],
+        array $tableHeaders = [],
+        $infoMessage = ''
+    ) {
+        try {
+            $response = $this->getResponse($filters);
+            $rows = $this->renderResult($response, $this->getName());
+
+            if ($this->getApiClient()->getResultHttpCode() === $acceptedStatusCode) {
+                if (!empty($tableHeaders)) {
+                    $this->renderTable($output, [
+                        TableInterface::HEADERS => $tableHeaders,
+                        TableInterface::ROWS => Table::buildRows($rows)
+                    ]);
+                }
+
+                if (!empty($infoMessage)) {
+                    $output->writeln($infoMessage);
+                }
+            }
+        } catch (ApiException $e) {
+            $message = 'Something went wrong.';
+            if ($e instanceof HttpNotFoundException || $e instanceof UnauthorizedException) {
+                $message = StatusCodes::getMessageForCode($this->getApiClient()->getResultHttpCode());
+            }
+
+            $output->writeln(__('<error>%1</error>', $message));
+        }
+    }
 
     /**
      * Render table faster

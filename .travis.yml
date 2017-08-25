@@ -3,7 +3,6 @@ php:
   - 5.5
   - 5.6
   - 7.0
-  - 7.1
   - hhvm
 
 cache:
@@ -29,3 +28,5 @@ after_script:
 notifications:
   email:
     - travis-github@nntoan.com
+  slack:
+    secure: onuxHJdr0sKalr1S+jL7LnuAcysvxxpHf+lFA1g9KaTph9S5DdfsEBJDYC1NZR+55AKuno+74sChGD3Ubd2pFYp1JRfLBvlKNhd0OQ2AFMWaVoonPhjE4yFeH2TjliFVHLQ0hScbDociO+SiGbL7N/2JeH0IvnXxgewNMD9Pqc5q7J80vidxxKPXLlFchab47CdATbDC4BiF2gh8MHqWBkIFGh9Q7wkU+UO4x9tWjsFTki+dhwASCTvoOq4C7DuFsuiQhwFXw/LbfZRSVYaaBPYV9oQV2dveo7pTDyltLoxMdxpSoIdNZeP0RA6Ii+xnsAvMP5g9CrJcbgpqOoaycdVLJQhXQG3VoSfujzpPWVkh7g3vb9jR/9tDIsc42Yii5oOu0DH0AGRN8NrOILCXtav6ZWeMEgySPxN5h/l35t4RNL8uDXHBB3ODWKkabMAKIPOnbb2RVct06KErHUDQbgp7auITzADp4MTXowQ8TF+VXNO6cRqHLaX5ai6nenGfGU53G0OKoUfwnwo4EK2QMwqPzuiG281IhQ3h9sP99dm/MVHz5l1cUnCEA776X4xyaeYYtE+ffqvOuz1MrUmmjkP7l/4Rc73Oh/QFQJeTkuhzA95exdMhfr82VciSLR2Im2tzbj2HzmdE0w25PeupqhoVkJtzOJJ2HFhhbhkLisI=
